@@ -18,32 +18,54 @@ A smart automation tool that extracts student results from PDF files, stores the
 
 🛠️ Tech Stack
 Backend: Python (PDF parsing, logic, automation)
+
 Database: MySQL
+
 Frontend: HTML, CSS, PHP
+
 Libraries: openpyxl, PyPDF2, Flask, matplotlib, smtplib
 
 📁 Project Structure
+
 wamp64/www/project/
+
 │
+
 ├── .venv/                    # Virtual environment (Python)
+
 ├── instance/trial.db         # Your Database which you want to use/instance folder
+
 ├── static/                   # Static assets (CSS, JS)
+
 ├── templates/                # Main logic and interface files
+
 │   ├── excel/                # Generated Excel reports (org by dept/scheme/sem)
+
 │   ├── uploads/              # Uploaded student PDFs (org by dept/scheme/sem)
+
 │   ├── graphs/, syllabus/    # Charts and syllabus data
+
 │   ├── login.html, dashboard.html
+
 │   ├── process_subjects.py, result.py  # Python logic
+
 │   ├── upload.php, insert.php         # PHP logic
+
 │   └── styles.css, logo.png           # Styles and branding
+
 │
+
 ├── uploads/                 # Downloaded result sheets manually added
 
 
 🚀 How It Works
+
 1.Upload result PDF.
+
 2.System extracts data, processes performance, and stores it in MySQL.
+
 3.Generates categorized Excel files and graphs.
+
 4.Displays results in dashboard and sends summary via email.
 
 📌 Use Cases
