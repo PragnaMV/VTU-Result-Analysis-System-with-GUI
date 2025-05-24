@@ -3,11 +3,17 @@ A smart automation tool that extracts student results from PDF files, stores the
 
 🚀 Features:
       📄 PDF Data Extraction: Automatically parses PDFs to retrieve USNs, subject codes, and marks.
+      
       📊 Performance Categorization: Classifies results into FCD, FC, SC, and Fail categories.
+      
       🏅 Top Performer Analysis: Identifies subject-wise toppers and overall best performers.
+      
       📈 Subject Difficulty Insights: Generates graphs for subject-wise performance trends.
+      
       📥 Excel Report Generation: Structured and formatted Excel outputs for each department.
+      
       🖥️ User Interface: Dashboard using Flask for admins and department-level users.
+      
       📧 Email Notifications: Sends automated result summaries and updates to stakeholders.
 
 🛠️ Tech Stack
