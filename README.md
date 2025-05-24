@@ -76,3 +76,11 @@ Performance review meetings and NAAC documentation.
 📧 Contact
 For queries or contributions, reach out at:
 📩 khushipragna21@gmail.com
+
+
+![Screenshot 2025-04-29 161545](https://github.com/user-attachments/assets/85c6d8a6-4341-485c-a296-9647a0b38560)
+![Screenshot 2025-04-29 161442](https://github.com/user-attachments/assets/10bd3422-3283-4ac8-b006-3f593478fe87)
+![Screenshot 2025-04-29 161339](https://github.com/user-attachments/assets/d930eae5-8315-41fc-88da-b0e97b53e436)
+![Screenshot 2025-04-29 161310](https://github.com/user-attachments/assets/ba285349-c145-4e18-bfc2-fcfa171552d6)
+![Screenshot 2025-04-29 160716](https://github.com/user-attachments/assets/7a44298d-3a33-4b0c-acfe-6cbfbfe64d42)
+![Screenshot 2025-04-29 160431](https://github.com/user-attachments/assets/3faf48a1-1cf3-4fdc-8b02-e22301049ac6)
