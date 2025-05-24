@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Result Analysis Dashboard</h1>
+  </header>
+  <main class="main-content">
+    <aside class="sidebar">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="#upload-files">Upload Files</a></li>
+        <li><a href="#download-reports">Download Reports</a></li>
+        <li><a href="#view-options">View Data</a></li>
+        <li><a href="#excel-sheet">Excel Sheet</a></li>
+        <li><a href="#subject-difficulty-analysis">Subject Difficulty Analysis</a></li>
+        <li><a href="#graph-view">View Graphs</a></li>
+      </ul>
+    </aside>
+    <section class="content">
+        <div id="upload-files" class="card">
+            <h2>Upload Files</h2>
+            <form id="upload-form" method="POST" action="upload.php" enctype="multipart/form-data">
+                <!-- Department Dropdown -->
+                <label for="department">Department:</label>
+                <select id="department" name="department" required>
+                    <option value="AIML">AIML</option>
+					<option value="AIDS">AIDS</option>
+					<option value="CSEA">CSEA</option>
+					<option value="CSEB">CSEB</option>
+					<option value="EEE">EEE</option>
+					<option value="ECEA">ECEA</option>
+					<option value="ECEB">ECEB</option>
+					<option value="ECEC">ECEC</option>
+					<option value="ISE">ISE</option>
+                </select>
+        
+                <!-- Scheme Dropdown -->
+                <label for="scheme">Scheme:</label>
+                <select id="scheme" name="scheme" required>
+                    <option value="2021">21</option>
+                    <option value="2022">22</option>
+                    <option value="2023">23</option>
+                    <option value="2024">24</option>
+                </select>
+        
+                <!-- Year Dropdown -->
+                <label for="year">Semester:</label>
+                <select id="year" name="year" required onchange="updateSemesterOptions()">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+    
+        
+                <!-- File Upload -->
+                <label for="file-upload">Upload PDFs:</label>
+                <input type="file" id="file-upload" name="file-upload[]" accept=".pdf" multiple required>
+        
+                <button type="submit" id="upload-btn">Upload</button>
+            </form>
+        </div>
+        
+        <script>
+            function updateSemesterOptions() {
+                const year = document.getElementById("year").value;
+                const semesterDropdown = document.getElementById("semester");
+        
+                // Clear previous semester options
+                semesterDropdown.innerHTML = "";
+        
+                // Add semester options based on the selected year
+                if (year) {
+                    const semesters = (year <= 4) ? ["1", "2"] : ["1", "2", "3", "4"];
+                    semesters.forEach(function(semester) {
+                        const option = document.createElement("option");
+                        option.value = semester;
+                        option.textContent = `Semester ${semester}`;
+                        semesterDropdown.appendChild(option);
+                    });
+                }
+            }
+        
+            // Call the function once to populate semester options initially
+            updateSemesterOptions();
+        </script>
+
+    <div id="download-reports" class="card">
+    <h2>Download Reports</h2>
+    <form id="report-form" method="POST" action="download.php" onsubmit="return setReportAction(event)">
+        <!-- Department Dropdown -->
+        <label for="department">Department:</label>
+        <select id="department" name="department" required>
+            <option value="AIML">AIML</option>
+            <option value="AIDS">AIDS</option>
+            <option value="CSEA">CSEA</option>
+			<option value="CSEB">CSEB</option>
+            <option value="EEE">EEE</option>
+            <option value="ECEA">ECEA</option>
+			<option value="ECEB">ECEB</option>
+			<option value="ECEC">ECEC</option>
+            <option value="ISE">ISE</option>
+        </select>
+
+        <!-- Scheme Dropdown -->
+        <label for="scheme">Scheme:</label>
+        <select id="scheme" name="scheme" required>
+            <option value="2021">21</option>
+            <option value="2022">22</option>
+            <option value="2023">23</option>
+            <option value="2024">24</option>
+        </select>
+
+        <!-- Semester Dropdown (Fixed to Work for Both) -->
+        <label for="semester">Semester:</label>
+        <select id="semester" name="semester" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+
+        <!-- Buttons -->
+        <button type="submit" id="download_excel" name="download" value="excel">Download Excel Sheet</button>
+        <button type="button" id="view_edit_report" onclick="handleViewEdit()">View & Edit Report</button>
+    </form>
+</div>
+
+<script>
+    function setReportAction(event) {
+        let form = document.getElementById('report-form');
+        let clickedButton = event.submitter;
+        
+        if (clickedButton.id === 'download_excel') {
+            // Rename 'semester' field to 'year' for download.php
+            let semesterDropdown = document.getElementById('semester');
+            semesterDropdown.name = 'year';  // Change name to 'year'
+
+            form.action = 'download.php';
+            form.method = 'POST';
+            return true; // Allow form submission
+        }
+        
+        event.preventDefault();
+        return false;
+    }
+
+    function handleViewEdit() {
+    const form = document.getElementById('report-form');
+    let department = form.elements['department'].value;
+    let scheme = form.elements['scheme'].value;
+    let semester = form.elements['semester'].value;
+
+    window.location.href = `display_excel.php?department=${encodeURIComponent(department)}&scheme=${encodeURIComponent(scheme)}&semester=${encodeURIComponent(semester)}`;
+}
+
+</script>
+
+
+
+  <div id="view-options" class="card">
+    <h2>View Data</h2>
+    <form id="view-form" method="GET" action="view_pdfs.php">
+      <!-- Department Dropdown -->
+      <label for="department">Department:</label>
+      <select id="department" name="department" required>
+			<option value="AIML">AIML</option>
+            <option value="AIDS">AIDS</option>
+            <option value="CSEA">CSEA</option>
+			<option value="CSEB">CSEB</option>
+            <option value="EEE">EEE</option>
+            <option value="ECEA">ECEA</option>
+			<option value="ECEB">ECEB</option>
+			<option value="ECEC">ECEC</option>
+            <option value="ISE">ISE</option>
+      </select>
+  
+      <!-- Scheme Dropdown -->
+      <label for="scheme">Scheme:</label>
+      <select id="scheme" name="scheme" required>
+          <option value="2021">21</option>
+          <option value="2022">22</option>
+          <option value="2023">23</option>
+          <option value="2024">24</option>
+      </select>
+  
+      <!-- Semester Dropdown -->
+      <label for="semester">Semester:</label>
+      <select id="semester" name="semester" required>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+      </select>
+  
+       <!-- Buttons -->
+        <button type="submit" id="view_pdfs" onclick="setAction('view_pdfs.php')">View Details</button>
+        <button type="submit" id="view_cgpas" onclick="setAction('process_cgpa.php')">View CGPAs</button>
+    </form>
+</div>
+<script>
+    function setAction(actionUrl) {
+        document.getElementById('view-form').action = actionUrl;
+    }
+</script>
+
+<div id="excel-sheet" class="card">
+    <h2>Fetch Excel Files</h2>
+    
+    <form method="POST" action="fetch_excel.php">
+        <!-- Department Dropdown -->
+        <label for="department">Department:</label>
+        <select id="department" name="department" required>
+            <option value="AIML">AIML</option>
+            <option value="AIDS">AIDS</option>
+            <option value="CSEA">CSEA</option>
+			<option value="CSEB">CSEB</option>
+            <option value="EEE">EEE</option>
+            <option value="ECEA">ECEA</option>
+			<option value="ECEB">ECEB</option>
+			<option value="ECEC">ECEC</option>
+            <option value="ISE">ISE</option>
+        </select>
+
+        <!-- Scheme Dropdown -->
+        <label for="scheme">Scheme:</label>
+        <select id="scheme" name="scheme" required>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+        </select>
+
+        <!-- Year Dropdown -->
+        <label for="year">Semester:</label>
+        <select id="year" name="year" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+
+        <!-- Submit button to fetch Excel files -->
+        <button type="submit">Fetch Excel Sheet</button>
+    </form>
+</div>
+  
+      <div id="subject-difficulty-analysis" class="card">
+        <form id="upload-form" action="upload_handler.php" method="post" enctype="multipart/form-data">
+            <h2>Subject Difficulty Analysis</h2>
+            <div style="text-align: center;"></div>
+            <label for="file-upload">Upload Syllabus Copy:</label>
+                <input type="file" id="file-upload" name="file-upload" accept=".pdf,.zip" >
+            <label for="semester"><strong>Select Semester:</strong></label>
+            <br>
+            <select id="semester" name="semester" required>
+                <option value="" disabled selected>-- Select your semester --</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+                <option value="VI">VI</option>
+                <option value="VII">VII</option>
+                <option value="VIII">VIII</option>
+            </select>
+    
+            <button type="submit" id="upload-btn">Upload and Analyze</button>
+            
+            <button type="button" id="display-semester-outputs-btn">Display Semester Outputs</button>
+        </form>
+    </div> 
+        <div id="semester-outputs-container"></div>
+        
+        <script>
+          // Display semester outputs
+          document.getElementById('display-semester-outputs-btn').addEventListener('click', function() {
+            const selectedSemester = document.getElementById('semester').value; // Get selected semester
+
+            if (selectedSemester) {
+                const semesterOutputsContainer = document.getElementById('semester-outputs-container');
+                semesterOutputsContainer.innerHTML = ''; // Clear previous results
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', 'upload_handler.php?semester=' + encodeURIComponent(selectedSemester), true); 
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            semesterOutputsContainer.innerHTML = `
+                                <p><strong>Selected semester:</strong> ${response.most_difficult}</p>
+                                <p><strong>Most Difficult Subject:</strong> ${response.subjects}</p>
+                                <p><strong>Least Difficult Subject:</strong> ${response.least_difficult}</p>
+                            `;
+                        } else {
+                            semesterOutputsContainer.innerHTML = `<p>Error: ${response.error}</p>`;
+                        }
+                    }
+                };
+                xhr.send();
+            } else {
+                alert('Please select a semester first.');
+            }
+        });
+        </script>
+    
+    </div>
+
+    <div id="graph-view" class="card">
+      <h2>Graphs</h2>
+      
+      <!-- Dropdown for selecting semester -->
+      <label for="semester-select">Select Semester:</label>
+      <select id="semester-select">
+        <option value="3">Semester 3</option>
+        <option value="4">Semester 4</option>
+        <option value="5">Semester 5</option>
+        <option value="6">Semester 6</option>
+        <option value="7">Semester 7</option>
+        <option value="8">Semester 8</option>
+        <!-- Add more semesters if needed -->
+      </select>
+    
+      <div id="analysis-results"></div>
+      <br>
+      <button id="display-images-btn">Display Images</button>
+      <div id="images-container"></div> <!-- Container for displaying images -->
+    </div>
+    
+    <script>
+      document.getElementById('display-images-btn').addEventListener('click', function() {
+        const imagesContainer = document.getElementById('images-container');
+        const selectedSemester = document.getElementById('semester-select').value; // Get selected semester
+        
+        imagesContainer.innerHTML = ''; // Clear any previous images
+        
+        // Generate image path based on the selected semester
+        const imageSrc = `/project/templates/graphs/semester_${selectedSemester}_graph.png`;
+        
+        const imgElement = document.createElement('img');
+        imgElement.src = imageSrc;
+        imgElement.alt = `Generated Image for Semester ${selectedSemester}`;
+        imgElement.style.maxWidth = '100%';
+        imgElement.style.marginBottom = '10px';
+        imagesContainer.appendChild(imgElement);
+      });
+    </script>
+    
+    
+    </section>
+  </main>
+  <footer class="footer" style="font-size: 0.6em;">
+    <p>&copy; 2024 Artificial Intelligence and Machine Learning Department Dashboard</p>
+    <p>Fiza Naaz, Pragna M V, Bhoomika M R, Rijutha S</p>
+</footer>
+  
+</body>
+</html>
